@@ -1,0 +1,13 @@
+[project]
+name = "oakoc-process"
+version = "0.1.0"
+description = "Data models for OAKOC tactical terrain analysis."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "pydantic>=2.0,<3.0",
+    "typing-extensions>=4.7",
+]
+
+[tool.uv]
+package = false
