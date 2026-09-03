@@ -1,0 +1,231 @@
+{
+  "mission": {
+    "name": "丘陵走廊 OAKOC 全流程框架测试",
+    "objective": "验证示例区域内从数据准备到五项 OAKOC 分析和成果发布的完整调用顺序",
+    "desired_end_state": "十三个步骤均留下执行记录，六项分析均生成明确标注的框架测试结果",
+    "phase": "方案验证"
+  },
+  "actors": [
+    {
+      "id": "actor-blue",
+      "name": "蓝方轮式机动分队",
+      "side": "friendly"
+    },
+    {
+      "id": "actor-red",
+      "name": "红方观察分队",
+      "side": "opposing"
+    }
+  ],
+  "environment": {
+    "analysis_area": {
+      "id": "aoi-hill-corridor",
+      "name": "虚构丘陵走廊示例区",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [0.0000, 0.0000],
+            [0.0400, 0.0000],
+            [0.0400, 0.0300],
+            [0.0000, 0.0300],
+            [0.0000, 0.0000]
+          ]
+        ]
+      },
+      "crs": "EPSG:4326"
+    },
+    "assets": [
+      {
+        "id": "fixture-dem",
+        "source_id": "copernicus.dem.glo30",
+        "name": "模拟 Copernicus DEM 数据",
+        "kind": "terrain",
+        "uri": "fixture://full-process/copernicus-dem.tif",
+        "media_type": "image/tiff; application=geotiff",
+        "crs": "EPSG:4326",
+        "version": "GLO-30-test-fixture",
+        "license": "Copernicus data terms",
+        "retrieved_at": "2026-09-03T01:00:00Z",
+        "variable_ids": ["raster.elevation"]
+      },
+      {
+        "id": "fixture-land-cover",
+        "source_id": "esa.worldcover.2021",
+        "name": "模拟 ESA WorldCover 数据",
+        "kind": "terrain",
+        "uri": "fixture://full-process/worldcover.tif",
+        "media_type": "image/tiff; application=geotiff",
+        "crs": "EPSG:4326",
+        "version": "2021-v200-test-fixture",
+        "license": "CC BY 4.0",
+        "observed_at": "2021-07-01T00:00:00Z",
+        "retrieved_at": "2026-09-03T01:02:00Z",
+        "variable_ids": ["raster.land_cover"]
+      },
+      {
+        "id": "fixture-osm-features",
+        "source_id": "osm.overpass",
+        "name": "模拟 OpenStreetMap 道路、建筑和水系数据",
+        "kind": "facility",
+        "uri": "fixture://full-process/osm-features.geojson",
+        "media_type": "application/geo+json",
+        "crs": "EPSG:4326",
+        "version": "2026-09-03-test-fixture",
+        "license": "ODbL 1.0",
+        "observed_at": "2026-09-03T00:30:00Z",
+        "retrieved_at": "2026-09-03T01:04:00Z",
+        "variable_ids": [
+          "entity.transport_network",
+          "entity.buildings",
+          "entity.hydrography"
+        ]
+      },
+      {
+        "id": "fixture-surface-water",
+        "source_id": "jrc.global_surface_water",
+        "name": "模拟 JRC 历史地表水数据",
+        "kind": "terrain",
+        "uri": "fixture://full-process/surface-water-history.tif",
+        "media_type": "image/tiff; application=geotiff",
+        "crs": "EPSG:4326",
+        "version": "1.4-test-fixture",
+        "license": "Copernicus open data policy",
+        "retrieved_at": "2026-09-03T01:06:00Z",
+        "variable_ids": ["raster.surface_water_history"]
+      },
+      {
+        "id": "fixture-optical",
+        "source_id": "copernicus.sentinel2.l2a",
+        "name": "模拟 Sentinel-2 L2A 光学影像",
+        "kind": "imagery",
+        "uri": "fixture://full-process/sentinel2-l2a.tif",
+        "media_type": "image/tiff; application=geotiff",
+        "crs": "EPSG:4326",
+        "version": "L2A-test-fixture",
+        "license": "Copernicus Sentinel Data Legal Notice",
+        "observed_at": "2026-09-02T09:40:00Z",
+        "retrieved_at": "2026-09-03T01:08:00Z",
+        "variable_ids": ["raster.optical_imagery"]
+      },
+      {
+        "id": "fixture-sar",
+        "source_id": "copernicus.sentinel1.grd",
+        "name": "模拟 Sentinel-1 GRD 雷达影像",
+        "kind": "imagery",
+        "uri": "fixture://full-process/sentinel1-grd.tif",
+        "media_type": "image/tiff; application=geotiff",
+        "crs": "EPSG:4326",
+        "version": "GRD-test-fixture",
+        "license": "Copernicus Sentinel Data Legal Notice",
+        "observed_at": "2026-09-02T18:15:00Z",
+        "retrieved_at": "2026-09-03T01:10:00Z",
+        "variable_ids": ["raster.sar_imagery"]
+      },
+      {
+        "id": "fixture-soil",
+        "source_id": "isric.soilgrids.2",
+        "name": "模拟 SoilGrids 土壤属性数据",
+        "kind": "terrain",
+        "uri": "fixture://full-process/soil-properties.tif",
+        "media_type": "image/tiff; application=geotiff",
+        "crs": "EPSG:4326",
+        "version": "2.0-test-fixture",
+        "license": "CC BY 4.0",
+        "retrieved_at": "2026-09-03T01:12:00Z",
+        "variable_ids": ["raster.soil_properties"]
+      },
+      {
+        "id": "fixture-weather",
+        "source_id": "copernicus.era5_land",
+        "name": "模拟 ERA5-Land 背景气象数据",
+        "kind": "weather",
+        "uri": "fixture://full-process/era5-land.nc",
+        "media_type": "application/x-netcdf",
+        "crs": "EPSG:4326",
+        "version": "hourly-test-fixture",
+        "license": "Copernicus Climate Change Service licence",
+        "observed_at": "2026-09-03T00:00:00Z",
+        "retrieved_at": "2026-09-03T01:14:00Z",
+        "variable_ids": ["raster.weather_fields"]
+      },
+      {
+        "id": "fixture-field-observations",
+        "name": "模拟现场动态观测",
+        "kind": "observation",
+        "uri": "fixture://full-process/field-observations.geojson",
+        "media_type": "application/geo+json",
+        "crs": "EPSG:4326",
+        "version": "test-fixture-1.0",
+        "observed_at": "2026-09-03T00:45:00Z",
+        "retrieved_at": "2026-09-03T01:16:00Z",
+        "variable_ids": [
+          "observation.dynamic_conditions",
+          "observation.bridge_condition",
+          "observation.water_state",
+          "observation.local_visibility"
+        ]
+      },
+      {
+        "id": "fixture-route-terminals",
+        "name": "模拟路线起点和目标区",
+        "kind": "other",
+        "uri": "fixture://full-process/route-terminals.geojson",
+        "media_type": "application/geo+json",
+        "crs": "EPSG:4326",
+        "version": "test-fixture-1.0",
+        "variable_ids": []
+      }
+    ]
+  },
+  "control": {
+    "analysis_perspective": "actor-blue",
+    "rule_set": {
+      "id": "oakoc.fixture.rules",
+      "version": "1.0"
+    },
+    "target_crs": "EPSG:32631",
+    "analysis_resolution_m": 30,
+    "time_windows": [
+      {
+        "start_at": "2026-09-03T02:00:00Z",
+        "finish_by": "2026-09-03T08:00:00Z"
+      }
+    ],
+    "requested_analyses": [
+      "obstacles",
+      "observation_and_fire",
+      "cover_and_concealment",
+      "key_terrain_candidates",
+      "approach_routes",
+      "key_terrain_review"
+    ],
+    "platform_profiles": [
+      {
+        "id": "platform.fixture.wheeled",
+        "version": "1.0"
+      }
+    ],
+    "sensor_profiles": [
+      {
+        "id": "sensor.fixture.ground-observer",
+        "version": "1.0"
+      }
+    ],
+    "fire_profiles": [
+      {
+        "id": "fire.fixture.line-of-sight",
+        "version": "1.0"
+      }
+    ],
+    "task_constraints": [
+      "不得把公开数据中缺少的对象解释为对象不存在",
+      "跨越水系或桥梁时必须保留现场状态来源",
+      "所有占位结果必须明确标记为不可用于实际判断"
+    ],
+    "route_terminals": [
+      "start-zone-alpha",
+      "objective-zone-bravo"
+    ]
+  }
+}

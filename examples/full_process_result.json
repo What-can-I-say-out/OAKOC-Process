@@ -1,0 +1,1163 @@
+{
+  "run_id": "a686c8c3-ef23-43b3-9030-b2fc63f95bf1",
+  "mode": "demo",
+  "status": "degraded",
+  "context": {
+    "request": {
+      "mission": {
+        "name": "丘陵走廊 OAKOC 全流程框架测试",
+        "objective": "验证示例区域内从数据准备到五项 OAKOC 分析和成果发布的完整调用顺序",
+        "desired_end_state": "十三个步骤均留下执行记录，六项分析均生成明确标注的框架测试结果",
+        "phase": "方案验证"
+      },
+      "actors": [
+        {
+          "id": "actor-blue",
+          "name": "蓝方轮式机动分队",
+          "side": "friendly"
+        },
+        {
+          "id": "actor-red",
+          "name": "红方观察分队",
+          "side": "opposing"
+        }
+      ],
+      "environment": {
+        "analysis_area": {
+          "id": "aoi-hill-corridor",
+          "name": "虚构丘陵走廊示例区",
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.04,
+                  0.0
+                ],
+                [
+                  0.04,
+                  0.03
+                ],
+                [
+                  0.0,
+                  0.03
+                ],
+                [
+                  0.0,
+                  0.0
+                ]
+              ]
+            ]
+          },
+          "uri": null,
+          "crs": "EPSG:4326"
+        },
+        "assets": [
+          {
+            "id": "fixture-dem",
+            "source_id": "copernicus.dem.glo30",
+            "name": "模拟 Copernicus DEM 数据",
+            "kind": "terrain",
+            "uri": "fixture://full-process/copernicus-dem.tif",
+            "media_type": "image/tiff; application=geotiff",
+            "crs": "EPSG:4326",
+            "version": "GLO-30-test-fixture",
+            "license": "Copernicus data terms",
+            "observed_at": null,
+            "retrieved_at": "2026-09-03T01:00:00Z",
+            "checksum": null,
+            "variable_ids": [
+              "raster.elevation"
+            ]
+          },
+          {
+            "id": "fixture-land-cover",
+            "source_id": "esa.worldcover.2021",
+            "name": "模拟 ESA WorldCover 数据",
+            "kind": "terrain",
+            "uri": "fixture://full-process/worldcover.tif",
+            "media_type": "image/tiff; application=geotiff",
+            "crs": "EPSG:4326",
+            "version": "2021-v200-test-fixture",
+            "license": "CC BY 4.0",
+            "observed_at": "2021-07-01T00:00:00Z",
+            "retrieved_at": "2026-09-03T01:02:00Z",
+            "checksum": null,
+            "variable_ids": [
+              "raster.land_cover"
+            ]
+          },
+          {
+            "id": "fixture-osm-features",
+            "source_id": "osm.overpass",
+            "name": "模拟 OpenStreetMap 道路、建筑和水系数据",
+            "kind": "facility",
+            "uri": "fixture://full-process/osm-features.geojson",
+            "media_type": "application/geo+json",
+            "crs": "EPSG:4326",
+            "version": "2026-09-03-test-fixture",
+            "license": "ODbL 1.0",
+            "observed_at": "2026-09-03T00:30:00Z",
+            "retrieved_at": "2026-09-03T01:04:00Z",
+            "checksum": null,
+            "variable_ids": [
+              "entity.transport_network",
+              "entity.buildings",
+              "entity.hydrography"
+            ]
+          },
+          {
+            "id": "fixture-surface-water",
+            "source_id": "jrc.global_surface_water",
+            "name": "模拟 JRC 历史地表水数据",
+            "kind": "terrain",
+            "uri": "fixture://full-process/surface-water-history.tif",
+            "media_type": "image/tiff; application=geotiff",
+            "crs": "EPSG:4326",
+            "version": "1.4-test-fixture",
+            "license": "Copernicus open data policy",
+            "observed_at": null,
+            "retrieved_at": "2026-09-03T01:06:00Z",
+            "checksum": null,
+            "variable_ids": [
+              "raster.surface_water_history"
+            ]
+          },
+          {
+            "id": "fixture-optical",
+            "source_id": "copernicus.sentinel2.l2a",
+            "name": "模拟 Sentinel-2 L2A 光学影像",
+            "kind": "imagery",
+            "uri": "fixture://full-process/sentinel2-l2a.tif",
+            "media_type": "image/tiff; application=geotiff",
+            "crs": "EPSG:4326",
+            "version": "L2A-test-fixture",
+            "license": "Copernicus Sentinel Data Legal Notice",
+            "observed_at": "2026-09-02T09:40:00Z",
+            "retrieved_at": "2026-09-03T01:08:00Z",
+            "checksum": null,
+            "variable_ids": [
+              "raster.optical_imagery"
+            ]
+          },
+          {
+            "id": "fixture-sar",
+            "source_id": "copernicus.sentinel1.grd",
+            "name": "模拟 Sentinel-1 GRD 雷达影像",
+            "kind": "imagery",
+            "uri": "fixture://full-process/sentinel1-grd.tif",
+            "media_type": "image/tiff; application=geotiff",
+            "crs": "EPSG:4326",
+            "version": "GRD-test-fixture",
+            "license": "Copernicus Sentinel Data Legal Notice",
+            "observed_at": "2026-09-02T18:15:00Z",
+            "retrieved_at": "2026-09-03T01:10:00Z",
+            "checksum": null,
+            "variable_ids": [
+              "raster.sar_imagery"
+            ]
+          },
+          {
+            "id": "fixture-soil",
+            "source_id": "isric.soilgrids.2",
+            "name": "模拟 SoilGrids 土壤属性数据",
+            "kind": "terrain",
+            "uri": "fixture://full-process/soil-properties.tif",
+            "media_type": "image/tiff; application=geotiff",
+            "crs": "EPSG:4326",
+            "version": "2.0-test-fixture",
+            "license": "CC BY 4.0",
+            "observed_at": null,
+            "retrieved_at": "2026-09-03T01:12:00Z",
+            "checksum": null,
+            "variable_ids": [
+              "raster.soil_properties"
+            ]
+          },
+          {
+            "id": "fixture-weather",
+            "source_id": "copernicus.era5_land",
+            "name": "模拟 ERA5-Land 背景气象数据",
+            "kind": "weather",
+            "uri": "fixture://full-process/era5-land.nc",
+            "media_type": "application/x-netcdf",
+            "crs": "EPSG:4326",
+            "version": "hourly-test-fixture",
+            "license": "Copernicus Climate Change Service licence",
+            "observed_at": "2026-09-03T00:00:00Z",
+            "retrieved_at": "2026-09-03T01:14:00Z",
+            "checksum": null,
+            "variable_ids": [
+              "raster.weather_fields"
+            ]
+          },
+          {
+            "id": "fixture-field-observations",
+            "source_id": null,
+            "name": "模拟现场动态观测",
+            "kind": "observation",
+            "uri": "fixture://full-process/field-observations.geojson",
+            "media_type": "application/geo+json",
+            "crs": "EPSG:4326",
+            "version": "test-fixture-1.0",
+            "license": null,
+            "observed_at": "2026-09-03T00:45:00Z",
+            "retrieved_at": "2026-09-03T01:16:00Z",
+            "checksum": null,
+            "variable_ids": [
+              "observation.dynamic_conditions",
+              "observation.bridge_condition",
+              "observation.water_state",
+              "observation.local_visibility"
+            ]
+          },
+          {
+            "id": "fixture-route-terminals",
+            "source_id": null,
+            "name": "模拟路线起点和目标区",
+            "kind": "other",
+            "uri": "fixture://full-process/route-terminals.geojson",
+            "media_type": "application/geo+json",
+            "crs": "EPSG:4326",
+            "version": "test-fixture-1.0",
+            "license": null,
+            "observed_at": null,
+            "retrieved_at": null,
+            "checksum": null,
+            "variable_ids": []
+          }
+        ]
+      },
+      "control": {
+        "analysis_perspective": "actor-blue",
+        "rule_set": {
+          "id": "oakoc.fixture.rules",
+          "version": "1.0"
+        },
+        "target_crs": "EPSG:32631",
+        "analysis_resolution_m": 30.0,
+        "time_windows": [
+          {
+            "start_at": "2026-09-03T02:00:00Z",
+            "finish_by": "2026-09-03T08:00:00Z"
+          }
+        ],
+        "requested_analyses": [
+          "obstacles",
+          "observation_and_fire",
+          "cover_and_concealment",
+          "key_terrain_candidates",
+          "approach_routes",
+          "key_terrain_review"
+        ],
+        "platform_profiles": [
+          {
+            "id": "platform.fixture.wheeled",
+            "version": "1.0"
+          }
+        ],
+        "sensor_profiles": [
+          {
+            "id": "sensor.fixture.ground-observer",
+            "version": "1.0"
+          }
+        ],
+        "fire_profiles": [
+          {
+            "id": "fire.fixture.line-of-sight",
+            "version": "1.0"
+          }
+        ],
+        "task_constraints": [
+          "不得把公开数据中缺少的对象解释为对象不存在",
+          "跨越水系或桥梁时必须保留现场状态来源",
+          "所有占位结果必须明确标记为不可用于实际判断"
+        ],
+        "route_terminals": [
+          "start-zone-alpha",
+          "objective-zone-bravo"
+        ]
+      }
+    },
+    "requirement_manifest": {
+      "run_id": "a686c8c3-ef23-43b3-9030-b2fc63f95bf1",
+      "catalog_version": "2026.09-mvp1",
+      "required_variable_ids": [
+        "context.aoi",
+        "context.time_window",
+        "context.analysis_perspective",
+        "context.mission_phase",
+        "context.mission_objective",
+        "context.effect_criteria",
+        "context.requested_analyses",
+        "context.rule_set_ref",
+        "parameter.mobility_profile",
+        "parameter.sensor_profile",
+        "parameter.fire_profile",
+        "context.route_terminals",
+        "raster.elevation",
+        "raster.land_cover",
+        "derived.normalized_data_stack",
+        "derived.data_coverage_mask",
+        "derived.slope",
+        "derived.surface_height_model",
+        "derived.base_mobility_surface",
+        "result.data_quality_report",
+        "result.analysis_baseline",
+        "result.baseline_readiness",
+        "result.obstacle_zones",
+        "result.mobility_cost_surface",
+        "result.mobility_restrictions",
+        "result.viewshed",
+        "result.observation_gaps",
+        "result.fire_coverage",
+        "result.fire_dead_zones",
+        "result.cover_zones",
+        "result.concealment_zones",
+        "result.exposure_surface",
+        "result.foundation_evidence_stack",
+        "result.foundation_conflicts",
+        "result.key_terrain_candidates",
+        "result.candidate_control_effects",
+        "result.approach_routes",
+        "result.route_cost_profiles",
+        "result.route_chokepoints",
+        "result.key_terrain_review",
+        "result.key_terrain_route_relevance",
+        "result.data_gap_report",
+        "result.map_products",
+        "result.structured_package",
+        "result.analysis_conclusion"
+      ],
+      "unresolved_variable_ids": [],
+      "blocked_stages": [],
+      "generated_at": "2026-09-03T06:51:14.056338Z"
+    },
+    "canonical_crs": "EPSG:32631",
+    "variable_bindings": [
+      {
+        "variable_id": "context.aoi",
+        "status": "complete",
+        "acquisition_mode": "task_config",
+        "value": {
+          "id": "aoi-hill-corridor",
+          "name": "虚构丘陵走廊示例区",
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.04,
+                  0.0
+                ],
+                [
+                  0.04,
+                  0.03
+                ],
+                [
+                  0.0,
+                  0.03
+                ],
+                [
+                  0.0,
+                  0.0
+                ]
+              ]
+            ]
+          },
+          "uri": null,
+          "crs": "EPSG:4326"
+        },
+        "asset_ids": [],
+        "quality": null,
+        "limitations": []
+      },
+      {
+        "variable_id": "context.time_window",
+        "status": "complete",
+        "acquisition_mode": "task_config",
+        "value": [
+          {
+            "start_at": "2026-09-03T02:00:00Z",
+            "finish_by": "2026-09-03T08:00:00Z"
+          }
+        ],
+        "asset_ids": [],
+        "quality": null,
+        "limitations": []
+      },
+      {
+        "variable_id": "context.analysis_perspective",
+        "status": "complete",
+        "acquisition_mode": "task_config",
+        "value": "actor-blue",
+        "asset_ids": [],
+        "quality": null,
+        "limitations": []
+      },
+      {
+        "variable_id": "context.mission_phase",
+        "status": "complete",
+        "acquisition_mode": "task_config",
+        "value": "方案验证",
+        "asset_ids": [],
+        "quality": null,
+        "limitations": []
+      },
+      {
+        "variable_id": "context.mission_objective",
+        "status": "complete",
+        "acquisition_mode": "task_config",
+        "value": {
+          "objective": "验证示例区域内从数据准备到五项 OAKOC 分析和成果发布的完整调用顺序",
+          "desired_end_state": "十三个步骤均留下执行记录，六项分析均生成明确标注的框架测试结果"
+        },
+        "asset_ids": [],
+        "quality": null,
+        "limitations": []
+      },
+      {
+        "variable_id": "context.effect_criteria",
+        "status": "complete",
+        "acquisition_mode": "task_config",
+        "value": [
+          "十三个步骤均留下执行记录，六项分析均生成明确标注的框架测试结果"
+        ],
+        "asset_ids": [],
+        "quality": null,
+        "limitations": []
+      },
+      {
+        "variable_id": "context.requested_analyses",
+        "status": "complete",
+        "acquisition_mode": "task_config",
+        "value": [
+          "obstacles",
+          "observation_and_fire",
+          "cover_and_concealment",
+          "key_terrain_candidates",
+          "approach_routes",
+          "key_terrain_review"
+        ],
+        "asset_ids": [],
+        "quality": null,
+        "limitations": []
+      },
+      {
+        "variable_id": "context.rule_set_ref",
+        "status": "complete",
+        "acquisition_mode": "task_config",
+        "value": {
+          "id": "oakoc.fixture.rules",
+          "version": "1.0"
+        },
+        "asset_ids": [],
+        "quality": null,
+        "limitations": []
+      },
+      {
+        "variable_id": "parameter.mobility_profile",
+        "status": "complete",
+        "acquisition_mode": "task_config",
+        "value": [
+          {
+            "id": "platform.fixture.wheeled",
+            "version": "1.0"
+          }
+        ],
+        "asset_ids": [],
+        "quality": null,
+        "limitations": []
+      },
+      {
+        "variable_id": "parameter.sensor_profile",
+        "status": "complete",
+        "acquisition_mode": "task_config",
+        "value": [
+          {
+            "id": "sensor.fixture.ground-observer",
+            "version": "1.0"
+          }
+        ],
+        "asset_ids": [],
+        "quality": null,
+        "limitations": []
+      },
+      {
+        "variable_id": "parameter.fire_profile",
+        "status": "complete",
+        "acquisition_mode": "task_config",
+        "value": [
+          {
+            "id": "fire.fixture.line-of-sight",
+            "version": "1.0"
+          }
+        ],
+        "asset_ids": [],
+        "quality": null,
+        "limitations": []
+      },
+      {
+        "variable_id": "context.route_terminals",
+        "status": "complete",
+        "acquisition_mode": "task_config",
+        "value": [
+          "start-zone-alpha",
+          "objective-zone-bravo"
+        ],
+        "asset_ids": [],
+        "quality": null,
+        "limitations": []
+      },
+      {
+        "variable_id": "context.task_constraints",
+        "status": "complete",
+        "acquisition_mode": "task_config",
+        "value": [
+          "不得把公开数据中缺少的对象解释为对象不存在",
+          "跨越水系或桥梁时必须保留现场状态来源",
+          "所有占位结果必须明确标记为不可用于实际判断"
+        ],
+        "asset_ids": [],
+        "quality": null,
+        "limitations": []
+      },
+      {
+        "variable_id": "parameter.target_crs",
+        "status": "complete",
+        "acquisition_mode": "task_config",
+        "value": "EPSG:32631",
+        "asset_ids": [],
+        "quality": null,
+        "limitations": []
+      },
+      {
+        "variable_id": "parameter.analysis_resolution",
+        "status": "complete",
+        "acquisition_mode": "task_config",
+        "value": 30.0,
+        "asset_ids": [],
+        "quality": null,
+        "limitations": []
+      },
+      {
+        "variable_id": "raster.elevation",
+        "status": "degraded",
+        "acquisition_mode": "public_direct",
+        "value": null,
+        "asset_ids": [
+          "fixture-dem"
+        ],
+        "quality": null,
+        "limitations": [
+          "框架仅记录资产绑定，尚未执行覆盖率、时效和内容质量检查。"
+        ]
+      },
+      {
+        "variable_id": "raster.land_cover",
+        "status": "degraded",
+        "acquisition_mode": "public_direct",
+        "value": null,
+        "asset_ids": [
+          "fixture-land-cover"
+        ],
+        "quality": null,
+        "limitations": [
+          "框架仅记录资产绑定，尚未执行覆盖率、时效和内容质量检查。"
+        ]
+      },
+      {
+        "variable_id": "entity.transport_network",
+        "status": "degraded",
+        "acquisition_mode": "public_direct",
+        "value": null,
+        "asset_ids": [
+          "fixture-osm-features"
+        ],
+        "quality": null,
+        "limitations": [
+          "框架仅记录资产绑定，尚未执行覆盖率、时效和内容质量检查。"
+        ]
+      },
+      {
+        "variable_id": "entity.buildings",
+        "status": "degraded",
+        "acquisition_mode": "public_direct",
+        "value": null,
+        "asset_ids": [
+          "fixture-osm-features"
+        ],
+        "quality": null,
+        "limitations": [
+          "框架仅记录资产绑定，尚未执行覆盖率、时效和内容质量检查。"
+        ]
+      },
+      {
+        "variable_id": "entity.hydrography",
+        "status": "degraded",
+        "acquisition_mode": "public_direct",
+        "value": null,
+        "asset_ids": [
+          "fixture-osm-features"
+        ],
+        "quality": null,
+        "limitations": [
+          "框架仅记录资产绑定，尚未执行覆盖率、时效和内容质量检查。"
+        ]
+      },
+      {
+        "variable_id": "raster.surface_water_history",
+        "status": "degraded",
+        "acquisition_mode": "public_direct",
+        "value": null,
+        "asset_ids": [
+          "fixture-surface-water"
+        ],
+        "quality": null,
+        "limitations": [
+          "框架仅记录资产绑定，尚未执行覆盖率、时效和内容质量检查。"
+        ]
+      },
+      {
+        "variable_id": "raster.optical_imagery",
+        "status": "degraded",
+        "acquisition_mode": "public_direct",
+        "value": null,
+        "asset_ids": [
+          "fixture-optical"
+        ],
+        "quality": null,
+        "limitations": [
+          "框架仅记录资产绑定，尚未执行覆盖率、时效和内容质量检查。"
+        ]
+      },
+      {
+        "variable_id": "raster.sar_imagery",
+        "status": "degraded",
+        "acquisition_mode": "public_direct",
+        "value": null,
+        "asset_ids": [
+          "fixture-sar"
+        ],
+        "quality": null,
+        "limitations": [
+          "框架仅记录资产绑定，尚未执行覆盖率、时效和内容质量检查。"
+        ]
+      },
+      {
+        "variable_id": "raster.soil_properties",
+        "status": "degraded",
+        "acquisition_mode": "public_direct",
+        "value": null,
+        "asset_ids": [
+          "fixture-soil"
+        ],
+        "quality": null,
+        "limitations": [
+          "框架仅记录资产绑定，尚未执行覆盖率、时效和内容质量检查。"
+        ]
+      },
+      {
+        "variable_id": "raster.weather_fields",
+        "status": "degraded",
+        "acquisition_mode": "public_direct",
+        "value": null,
+        "asset_ids": [
+          "fixture-weather"
+        ],
+        "quality": null,
+        "limitations": [
+          "框架仅记录资产绑定，尚未执行覆盖率、时效和内容质量检查。"
+        ]
+      },
+      {
+        "variable_id": "observation.dynamic_conditions",
+        "status": "degraded",
+        "acquisition_mode": "public_direct",
+        "value": null,
+        "asset_ids": [
+          "fixture-field-observations"
+        ],
+        "quality": null,
+        "limitations": [
+          "框架仅记录资产绑定，尚未执行覆盖率、时效和内容质量检查。"
+        ]
+      },
+      {
+        "variable_id": "observation.bridge_condition",
+        "status": "degraded",
+        "acquisition_mode": "public_direct",
+        "value": null,
+        "asset_ids": [
+          "fixture-field-observations"
+        ],
+        "quality": null,
+        "limitations": [
+          "框架仅记录资产绑定，尚未执行覆盖率、时效和内容质量检查。"
+        ]
+      },
+      {
+        "variable_id": "observation.water_state",
+        "status": "degraded",
+        "acquisition_mode": "public_direct",
+        "value": null,
+        "asset_ids": [
+          "fixture-field-observations"
+        ],
+        "quality": null,
+        "limitations": [
+          "框架仅记录资产绑定，尚未执行覆盖率、时效和内容质量检查。"
+        ]
+      },
+      {
+        "variable_id": "observation.local_visibility",
+        "status": "degraded",
+        "acquisition_mode": "public_direct",
+        "value": null,
+        "asset_ids": [
+          "fixture-field-observations"
+        ],
+        "quality": null,
+        "limitations": [
+          "框架仅记录资产绑定，尚未执行覆盖率、时效和内容质量检查。"
+        ]
+      }
+    ],
+    "quality_issues": [
+      "部分输入图层需要转换到目标坐标参考系。"
+    ]
+  },
+  "stages": [
+    {
+      "stage": "context.requirements",
+      "status": "succeeded",
+      "started_at": "2026-09-03T06:51:14.056252Z",
+      "completed_at": "2026-09-03T06:51:14.056344Z",
+      "message": "变量需求已生成。"
+    },
+    {
+      "stage": "data.acquire",
+      "status": "succeeded",
+      "started_at": "2026-09-03T06:51:14.056346Z",
+      "completed_at": "2026-09-03T06:51:14.056347Z",
+      "message": "已登记输入资产；公开数据下载适配器尚未实现。"
+    },
+    {
+      "stage": "data.normalize",
+      "status": "degraded",
+      "started_at": "2026-09-03T06:51:14.056348Z",
+      "completed_at": "2026-09-03T06:51:14.056426Z",
+      "message": "已建立统一上下文；尚未执行实际重投影、裁剪和时空对齐。"
+    },
+    {
+      "stage": "data.quality_and_derive",
+      "status": "degraded",
+      "started_at": "2026-09-03T06:51:14.056427Z",
+      "completed_at": "2026-09-03T06:51:14.056427Z",
+      "message": "质量记录格式和计算变量目录已建立；尚未执行实际地图计算。"
+    },
+    {
+      "stage": "baseline.build",
+      "status": "degraded",
+      "started_at": "2026-09-03T06:51:14.056429Z",
+      "completed_at": "2026-09-03T06:51:14.056429Z",
+      "message": "已形成框架基线；数据是否达到分析要求仍待后续代码检查。"
+    },
+    {
+      "stage": "analysis.obstacles",
+      "status": "degraded",
+      "started_at": "2026-09-03T06:51:14.056459Z",
+      "completed_at": "2026-09-03T06:51:14.056473Z",
+      "message": "分析节点执行完成。"
+    },
+    {
+      "stage": "analysis.observation_and_fire",
+      "status": "degraded",
+      "started_at": "2026-09-03T06:51:14.056475Z",
+      "completed_at": "2026-09-03T06:51:14.056483Z",
+      "message": "分析节点执行完成。"
+    },
+    {
+      "stage": "analysis.cover_and_concealment",
+      "status": "degraded",
+      "started_at": "2026-09-03T06:51:14.056484Z",
+      "completed_at": "2026-09-03T06:51:14.056491Z",
+      "message": "分析节点执行完成。"
+    },
+    {
+      "stage": "analysis.foundation_aggregate",
+      "status": "degraded",
+      "started_at": "2026-09-03T06:51:14.056492Z",
+      "completed_at": "2026-09-03T06:51:14.056494Z",
+      "message": "基础结果引用已汇聚；冲突检测和空间对齐尚未实现。"
+    },
+    {
+      "stage": "analysis.key_terrain_candidates",
+      "status": "degraded",
+      "started_at": "2026-09-03T06:51:14.056495Z",
+      "completed_at": "2026-09-03T06:51:14.056503Z",
+      "message": "分析节点执行完成。"
+    },
+    {
+      "stage": "analysis.approach_routes",
+      "status": "degraded",
+      "started_at": "2026-09-03T06:51:14.056506Z",
+      "completed_at": "2026-09-03T06:51:14.056513Z",
+      "message": "分析节点执行完成。"
+    },
+    {
+      "stage": "analysis.key_terrain_review",
+      "status": "degraded",
+      "started_at": "2026-09-03T06:51:14.056514Z",
+      "completed_at": "2026-09-03T06:51:14.056519Z",
+      "message": "分析节点执行完成。"
+    },
+    {
+      "stage": "publish.validate_and_release",
+      "status": "degraded",
+      "started_at": "2026-09-03T06:51:14.056520Z",
+      "completed_at": "2026-09-03T06:51:14.056524Z",
+      "message": "综合校验完成。"
+    }
+  ],
+  "analyses": [
+    {
+      "kind": "obstacles",
+      "scope": {
+        "analysis_area": "aoi-hill-corridor",
+        "perspective": "actor-blue",
+        "valid_time": [
+          {
+            "start_at": "2026-09-03T02:00:00Z",
+            "finish_by": "2026-09-03T08:00:00Z"
+          }
+        ],
+        "rule_set": {
+          "id": "oakoc.fixture.rules",
+          "version": "1.0"
+        }
+      },
+      "status": "degraded",
+      "summary": "障碍分析阶段已完成框架级调用。",
+      "findings": [
+        {
+          "title": "障碍分析接口验证",
+          "assessment": "输入和依赖已接收；障碍提取和通行成本计算尚未接入。",
+          "areas": [
+            "aoi-hill-corridor"
+          ],
+          "evidence_source_ids": [
+            "copernicus.dem.glo30",
+            "esa.worldcover.2021",
+            "osm.overpass",
+            "jrc.global_surface_water",
+            "copernicus.sentinel2.l2a",
+            "copernicus.sentinel1.grd",
+            "isric.soilgrids.2",
+            "copernicus.era5_land",
+            "fixture-field-observations",
+            "fixture-route-terminals"
+          ]
+        }
+      ],
+      "warnings": [
+        "demo 占位结果，不可作为实际分析结论；当前依赖：无。"
+      ],
+      "confidence": {
+        "level": "unknown",
+        "evidence_coverage": null,
+        "reasons": [
+          "当前仅验证项目框架，尚未执行领域算法。"
+        ]
+      },
+      "placeholder": true
+    },
+    {
+      "kind": "observation_and_fire",
+      "scope": {
+        "analysis_area": "aoi-hill-corridor",
+        "perspective": "actor-blue",
+        "valid_time": [
+          {
+            "start_at": "2026-09-03T02:00:00Z",
+            "finish_by": "2026-09-03T08:00:00Z"
+          }
+        ],
+        "rule_set": {
+          "id": "oakoc.fixture.rules",
+          "version": "1.0"
+        }
+      },
+      "status": "degraded",
+      "summary": "观察与射界阶段已完成框架级调用。",
+      "findings": [
+        {
+          "title": "观察与射界接口验证",
+          "assessment": "输入和依赖已接收；表面模型视域和能力相关射界计算尚未接入。",
+          "areas": [
+            "aoi-hill-corridor"
+          ],
+          "evidence_source_ids": [
+            "copernicus.dem.glo30",
+            "esa.worldcover.2021",
+            "osm.overpass",
+            "jrc.global_surface_water",
+            "copernicus.sentinel2.l2a",
+            "copernicus.sentinel1.grd",
+            "isric.soilgrids.2",
+            "copernicus.era5_land",
+            "fixture-field-observations",
+            "fixture-route-terminals"
+          ]
+        }
+      ],
+      "warnings": [
+        "demo 占位结果，不可作为实际分析结论；当前依赖：无。"
+      ],
+      "confidence": {
+        "level": "unknown",
+        "evidence_coverage": null,
+        "reasons": [
+          "当前仅验证项目框架，尚未执行领域算法。"
+        ]
+      },
+      "placeholder": true
+    },
+    {
+      "kind": "cover_and_concealment",
+      "scope": {
+        "analysis_area": "aoi-hill-corridor",
+        "perspective": "actor-blue",
+        "valid_time": [
+          {
+            "start_at": "2026-09-03T02:00:00Z",
+            "finish_by": "2026-09-03T08:00:00Z"
+          }
+        ],
+        "rule_set": {
+          "id": "oakoc.fixture.rules",
+          "version": "1.0"
+        }
+      },
+      "status": "degraded",
+      "summary": "隐蔽与掩蔽阶段已完成框架级调用。",
+      "findings": [
+        {
+          "title": "隐蔽与掩蔽接口验证",
+          "assessment": "输入和依赖已接收；条件隐蔽、掩蔽和暴露计算尚未接入。",
+          "areas": [
+            "aoi-hill-corridor"
+          ],
+          "evidence_source_ids": [
+            "copernicus.dem.glo30",
+            "esa.worldcover.2021",
+            "osm.overpass",
+            "jrc.global_surface_water",
+            "copernicus.sentinel2.l2a",
+            "copernicus.sentinel1.grd",
+            "isric.soilgrids.2",
+            "copernicus.era5_land",
+            "fixture-field-observations",
+            "fixture-route-terminals"
+          ]
+        }
+      ],
+      "warnings": [
+        "demo 占位结果，不可作为实际分析结论；当前依赖：无。"
+      ],
+      "confidence": {
+        "level": "unknown",
+        "evidence_coverage": null,
+        "reasons": [
+          "当前仅验证项目框架，尚未执行领域算法。"
+        ]
+      },
+      "placeholder": true
+    },
+    {
+      "kind": "key_terrain_candidates",
+      "scope": {
+        "analysis_area": "aoi-hill-corridor",
+        "perspective": "actor-blue",
+        "valid_time": [
+          {
+            "start_at": "2026-09-03T02:00:00Z",
+            "finish_by": "2026-09-03T08:00:00Z"
+          }
+        ],
+        "rule_set": {
+          "id": "oakoc.fixture.rules",
+          "version": "1.0"
+        }
+      },
+      "status": "degraded",
+      "summary": "候选关键地形阶段已完成框架级调用。",
+      "findings": [
+        {
+          "title": "候选关键地形接口验证",
+          "assessment": "输入和依赖已接收；任务效果相关的候选识别尚未接入。",
+          "areas": [
+            "aoi-hill-corridor"
+          ],
+          "evidence_source_ids": [
+            "copernicus.dem.glo30",
+            "esa.worldcover.2021",
+            "osm.overpass",
+            "jrc.global_surface_water",
+            "copernicus.sentinel2.l2a",
+            "copernicus.sentinel1.grd",
+            "isric.soilgrids.2",
+            "copernicus.era5_land",
+            "fixture-field-observations",
+            "fixture-route-terminals"
+          ]
+        }
+      ],
+      "warnings": [
+        "demo 占位结果，不可作为实际分析结论；当前依赖：obstacles, observation_and_fire, cover_and_concealment。"
+      ],
+      "confidence": {
+        "level": "unknown",
+        "evidence_coverage": null,
+        "reasons": [
+          "当前仅验证项目框架，尚未执行领域算法。"
+        ]
+      },
+      "placeholder": true
+    },
+    {
+      "kind": "approach_routes",
+      "scope": {
+        "analysis_area": "aoi-hill-corridor",
+        "perspective": "actor-blue",
+        "valid_time": [
+          {
+            "start_at": "2026-09-03T02:00:00Z",
+            "finish_by": "2026-09-03T08:00:00Z"
+          }
+        ],
+        "rule_set": {
+          "id": "oakoc.fixture.rules",
+          "version": "1.0"
+        }
+      },
+      "status": "degraded",
+      "summary": "接近路线阶段已完成框架级调用。",
+      "findings": [
+        {
+          "title": "接近路线接口验证",
+          "assessment": "输入和依赖已接收；候选路线生成、成本分解和瓶颈识别尚未接入。",
+          "areas": [
+            "aoi-hill-corridor"
+          ],
+          "evidence_source_ids": [
+            "copernicus.dem.glo30",
+            "esa.worldcover.2021",
+            "osm.overpass",
+            "jrc.global_surface_water",
+            "copernicus.sentinel2.l2a",
+            "copernicus.sentinel1.grd",
+            "isric.soilgrids.2",
+            "copernicus.era5_land",
+            "fixture-field-observations",
+            "fixture-route-terminals"
+          ]
+        }
+      ],
+      "warnings": [
+        "demo 占位结果，不可作为实际分析结论；当前依赖：obstacles, observation_and_fire, cover_and_concealment, key_terrain_candidates。"
+      ],
+      "confidence": {
+        "level": "unknown",
+        "evidence_coverage": null,
+        "reasons": [
+          "当前仅验证项目框架，尚未执行领域算法。"
+        ]
+      },
+      "placeholder": true
+    },
+    {
+      "kind": "key_terrain_review",
+      "scope": {
+        "analysis_area": "aoi-hill-corridor",
+        "perspective": "actor-blue",
+        "valid_time": [
+          {
+            "start_at": "2026-09-03T02:00:00Z",
+            "finish_by": "2026-09-03T08:00:00Z"
+          }
+        ],
+        "rule_set": {
+          "id": "oakoc.fixture.rules",
+          "version": "1.0"
+        }
+      },
+      "status": "degraded",
+      "summary": "关键地形复核阶段已完成框架级调用。",
+      "findings": [
+        {
+          "title": "关键地形复核接口验证",
+          "assessment": "输入和依赖已接收；任务相关性、路线控制和替代性复核尚未接入。",
+          "areas": [
+            "aoi-hill-corridor"
+          ],
+          "evidence_source_ids": [
+            "copernicus.dem.glo30",
+            "esa.worldcover.2021",
+            "osm.overpass",
+            "jrc.global_surface_water",
+            "copernicus.sentinel2.l2a",
+            "copernicus.sentinel1.grd",
+            "isric.soilgrids.2",
+            "copernicus.era5_land",
+            "fixture-field-observations",
+            "fixture-route-terminals"
+          ]
+        }
+      ],
+      "warnings": [
+        "demo 占位结果，不可作为实际分析结论；当前依赖：obstacles, observation_and_fire, cover_and_concealment, key_terrain_candidates, approach_routes。"
+      ],
+      "confidence": {
+        "level": "unknown",
+        "evidence_coverage": null,
+        "reasons": [
+          "当前仅验证项目框架，尚未执行领域算法。"
+        ]
+      },
+      "placeholder": true
+    }
+  ],
+  "validation_issues": [],
+  "output": {
+    "map_products": [
+      "obstacles 专题地图（待渲染器实现）",
+      "observation_and_fire 专题地图（待渲染器实现）",
+      "cover_and_concealment 专题地图（待渲染器实现）",
+      "key_terrain_candidates 专题地图（待渲染器实现）",
+      "approach_routes 专题地图（待渲染器实现）",
+      "key_terrain_review 专题地图（待渲染器实现）"
+    ],
+    "structured_sections": [
+      "obstacles",
+      "observation_and_fire",
+      "cover_and_concealment",
+      "key_terrain_candidates",
+      "approach_routes",
+      "key_terrain_review"
+    ],
+    "data_gap_report": [],
+    "conclusion": "OAKOC demo 管线执行完成；结果仅验证框架，不代表实际分析结论。",
+    "warnings": [
+      "尚未生成实际地图文件。"
+    ]
+  }
+}
